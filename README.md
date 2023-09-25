@@ -25,7 +25,8 @@ Status:
 # Hardware Requirements
 
 - [PICDEM DM163045][DM163045] development board (you can use any PIC board that
-  supports 20 pin [PIC16F1579][PIC16F1579]
+  supports 20 pin [PIC16F1579][PIC16F1579]). I have one that is now 10 years old
+  and I stil like it - there is everything I need to work with 8-bit PIC MCUs.
 - [PIC16F1579][PIC16F1579]
 - [LM35][LM35] Temperature-to-Voltage sensor
 
@@ -36,6 +37,14 @@ TODO:
 # Setup
 
 TODO:
+
+# Resources
+
+
+You can find downloaded MCC Melody libraries under:
+```
+c:\Users\USERNAME\.mcc\libraries\@mchp-mcc\FOLDER
+```
 
 [DM163045]: https://www.microchip.com/en-us/development-tool/dm163045
 [PIC16F1579]: https://www.microchip.com/en-us/product/pic16f1579
