@@ -31,14 +31,22 @@
     THIS SOFTWARE.
 */
 #include "mcc_generated_files/system/system.h"
+
+#define APP_VERSION 100 // 123 = 1.23
 /*
     Main application
 */
+
+uint16_t gCount = 0;
 
 int main(void)
 {
     SYSTEM_Initialize();
 
+    // Manually remap RA5 to TX output from UART
+    // see https://forum.microchip.com/s/topic/a5C3l000000MdMJEA0/t381350
+    RA5PPS = 0x9;
+    
     // If using interrupts in PIC18 High/Low Priority Mode you need to enable the Global High and Low Interrupts 
     // If using interrupts in PIC Mid-Range Compatibility Mode you need to enable the Global and Peripheral Interrupts 
     // Use the following macros to: 
@@ -55,9 +63,12 @@ int main(void)
     // Disable the Peripheral Interrupts 
     //INTERRUPT_PeripheralInterruptDisable(); 
 
+    printf("\r\nL%d: App v%d.%d\r\n",__LINE__,APP_VERSION/100,APP_VERSION%100);
     while(1)
     {
-        __delay_ms(500);
+        gCount++;
+        printf("L%d: C=%u\r\n",__LINE__,gCount);
+        __delay_ms(2000);
         IO_RB7_Toggle();
     }    
 }

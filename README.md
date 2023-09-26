@@ -8,8 +8,36 @@ Also it is my first project where I'm playing with [MCC Melody][MCC Melody]
 code generator tool.
 
 Status:
-- just blinks LED on RB7 (PIN10) at 1s rate (toggle rate 0.5s) using
-  Detail function in `main()` (no interrupt and/or Timer used, yet...)
+- prints debug messages on UART, PIN2, RA5, as TX every 2s. You have to set your PC to:
+  - Speed: 19200 Baud - can't use higher speed, because BRG (Baud Rate Generator) is very
+    gross and higher speeds has unacceptable timing errors (like 3% or so), see data sheet
+    at `DS40001782C-page 207 to page 208`
+  - Data: 8-bit
+  - Stop: 1 stop bit
+  - Parity: None
+  - Flow Control: None
+- in future I will print Temperature on UART
+- I was able to map UART pin only thanks good guys on Forum:
+  - https://forum.microchip.com/s/topic/a5C3l000000MdMJEA0/t381350
+
+Debug messages on UART:
+```
+L66: App v1.0
+L70: C=1
+L70: C=2
+```
+- legend:
+  - `Lxx`: Line number in [PIC16-LM35-Melody.X/main.c](PIC16-LM35-Melody.X/main.c) source file
+  - `C=x`: simple counter that increments with each `printf(3)` in `while` loop
+- messages are as short as possible to deal well with relatively slow UART speed.
+
+- blinks LED on RB7 (PIN10) around 4s rate (toggle rate 2s) using
+  Detail function in `main()` (no interrupt and/or Timer used, yet...).
+  - I slowed it down to not overflow UART at 19200 Baud.
+
+Used MCC Melody Components
+* [MCC UART Driver](https://onlinedocs.microchip.com/oxy/GUID-420E6AAC-9141-47BF-A4C7-A6EA17246D0D-en-US-17/GUID-BC229F28-29AC-46A3-9FAA-1681C2E93A5C.html#GUID-1D120597-A740-428D-B577-02558CF88F8A)
+* [MCC UART PLIB](https://onlinedocs.microchip.com/oxy/GUID-420E6AAC-9141-47BF-A4C7-A6EA17246D0D-en-US-17/GUID-D7E1665E-7BE5-456B-90BA-836DEC19A726.html#GUID-D7E1665E-7BE5-456B-90BA-836DEC19A726)
 
 > WARNING!
 > 
@@ -43,6 +71,10 @@ TODO:
 
 # Resources
 
+MCC Melody is unable to Map UART TX pin in GUI - UART is shown in Pin Grid,
+but you can't assign pin to it. However here is solution - manually remap
+pin at program startup:
+- https://forum.microchip.com/s/topic/a5C3l000000MdMJEA0/t381350
 
 You can find downloaded MCC Melody libraries under:
 ```
