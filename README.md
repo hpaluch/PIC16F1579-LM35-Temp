@@ -32,7 +32,10 @@ Status:
 
 # Software Requirements
 
-TODO:
+* [XC8 compiler][XC compilers] - tested version v2.45
+* [MPLAB X IDE][MPLAB X IDE] - tested version v6.15
+* Device Family Pack `PIC12-16F1xxx_DFP` v1.7.242
+* MCC Melody Core 5.5.7
 
 # Setup
 
@@ -46,6 +49,8 @@ You can find downloaded MCC Melody libraries under:
 c:\Users\USERNAME\.mcc\libraries\@mchp-mcc\FOLDER
 ```
 
+[XC compilers]: https://www.microchip.com/mplab/compilers
+[MPLAB X IDE]: https://www.microchip.com/mplab/mplab-x-ide
 [DM163045]: https://www.microchip.com/en-us/development-tool/dm163045
 [PIC16F1579]: https://www.microchip.com/en-us/product/pic16f1579
 [LM35]: https://www.ti.com/lit/ds/symlink/lm35.pdf
