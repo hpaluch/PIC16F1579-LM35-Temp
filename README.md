@@ -8,7 +8,7 @@ Also it is my first project where I'm playing with [MCC Melody][MCC Melody]
 code generator tool.
 
 Status:
-- prints debug messages on UART, PIN2, RA5, as TX every 2s. You have to set your PC to:
+- prints debug messages on UART, `PIN2`, `RA5`, as `UART TX` (`RA5PPS=9`) every 2s. You have to set your PC to:
   - Speed: 19200 Baud - can't use higher speed, because BRG (Baud Rate Generator) is very
     gross and higher speeds has unacceptable timing errors (like 3% or so), see data sheet
     at `DS40001782C-page 207 to page 208`
@@ -55,6 +55,8 @@ Used MCC Melody Components
 - [PICDEM DM163045][DM163045] development board (you can use any PIC board that
   supports 20 pin [PIC16F1579][PIC16F1579]). I have one that is now 10 years old
   and I stil like it - there is everything I need to work with 8-bit PIC MCUs.
+
+Additional parts (not included with PICDEM):
 - [PIC16F1579][PIC16F1579]
 - [LM35][LM35] Temperature-to-Voltage sensor
 
