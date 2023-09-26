@@ -59,6 +59,9 @@ Used MCC Melody Components
 Additional parts (not included with PICDEM):
 - [PIC16F1579][PIC16F1579]
 - [LM35][LM35] Temperature-to-Voltage sensor
+- [USB Console Cable #954][cable954] - or any other usable USB to UART adapter.
+  - verify with DMM that LM317 regulator output on PICDEM board is just 5V
+  - connect Black wire to Ground, and Green wire to UART TX - PIN2 RA5
 
 # Software Requirements
 
@@ -83,6 +86,7 @@ You can find downloaded MCC Melody libraries under:
 c:\Users\USERNAME\.mcc\libraries\@mchp-mcc\FOLDER
 ```
 
+[cable954]: https://www.modmypi.com/raspberry-pi/communication-1068/serial-1075/usb-to-ttl-serial-cable-debug--console-cable-for-raspberry-pi
 [XC compilers]: https://www.microchip.com/mplab/compilers
 [MPLAB X IDE]: https://www.microchip.com/mplab/mplab-x-ide
 [DM163045]: https://www.microchip.com/en-us/development-tool/dm163045
