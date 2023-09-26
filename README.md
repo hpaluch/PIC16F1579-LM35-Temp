@@ -35,7 +35,7 @@ Status:
 * [XC8 compiler][XC compilers] - tested version v2.45
 * [MPLAB X IDE][MPLAB X IDE] - tested version v6.15
 * Device Family Pack `PIC12-16F1xxx_DFP` v1.7.242
-* MCC Melody Core 5.5.7
+* MCC Melody Tool v5.3.7, Core v5.5.7
 
 # Setup
 

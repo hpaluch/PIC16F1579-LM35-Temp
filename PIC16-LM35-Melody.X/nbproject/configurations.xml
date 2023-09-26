@@ -14,9 +14,6 @@
           <itemPath>mcc_generated_files/system/clock.h</itemPath>
           <itemPath>mcc_generated_files/system/interrupt.h</itemPath>
         </logicalFolder>
-        <logicalFolder name="timer" displayName="timer" projectFiles="true">
-          <itemPath>mcc_generated_files/timer/delay.h</itemPath>
-        </logicalFolder>
       </logicalFolder>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
@@ -38,11 +35,6 @@
             <itemPath>mcc_generated_files/system/src/interrupt.c</itemPath>
           </logicalFolder>
         </logicalFolder>
-        <logicalFolder name="timer" displayName="timer" projectFiles="true">
-          <logicalFolder name="src" displayName="src" projectFiles="true">
-            <itemPath>mcc_generated_files/timer/src/delay.c</itemPath>
-          </logicalFolder>
-        </logicalFolder>
       </logicalFolder>
       <itemPath>main.c</itemPath>
     </logicalFolder>
@@ -61,7 +53,7 @@
         <targetDevice>PIC16F1579</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>noID</platformTool>
+        <platformTool>PICkit3PlatformTool</platformTool>
         <languageToolchain>XC8</languageToolchain>
         <languageToolchainVersion>2.45</languageToolchainVersion>
         <platform>3</platform>

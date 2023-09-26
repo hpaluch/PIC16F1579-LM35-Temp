@@ -31,7 +31,6 @@
     THIS SOFTWARE.
 */
 #include "mcc_generated_files/system/system.h"
-#include "mcc_generated_files/timer/delay.h"
 /*
     Main application
 */
@@ -56,10 +55,9 @@ int main(void)
     // Disable the Peripheral Interrupts 
     //INTERRUPT_PeripheralInterruptDisable(); 
 
-
     while(1)
     {
-        DELAY_milliseconds(500);
+        __delay_ms(500);
         IO_RB7_Toggle();
     }    
 }
