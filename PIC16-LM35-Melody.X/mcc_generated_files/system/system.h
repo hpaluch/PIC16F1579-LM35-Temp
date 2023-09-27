@@ -40,7 +40,9 @@
 #include "config_bits.h"
 #include "../system/clock.h"
 #include "../system/pins.h"
+#include "../adc/adc1.h"
 #include "../uart/eusart.h"
+#include "../fvr/fvr.h"
 #include "../system/interrupt.h"
 
 /**

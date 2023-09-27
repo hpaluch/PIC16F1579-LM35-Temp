@@ -32,15 +32,36 @@
 */
 #include "mcc_generated_files/system/system.h"
 
+
+#define APP_FVR_TIMEOUT_MS 101
+
 #define APP_VERSION 100 // 123 = 1.23
+
+typedef enum {
+    APP_ERROR_FVR_NOT_READY
+} app_error_t;
+
+
+int8_t gErrorCode=-1;
+void app_fatal_error(app_error_t err){
+    IO_RB7_SetLow(); // RED LED on (we use inverted logic)
+    gErrorCode = err;
+    // loop forever on error
+    while(1){
+       NOP(); // may put breakpoint here
+    }
+}
+
 /*
     Main application
 */
 
 uint16_t gCount = 0;
+adc_result_t gAdcRaw = 0; // Raw value from ADC
 
 int main(void)
 {
+    uint8_t i;
     SYSTEM_Initialize();
 
     // Manually remap RA5 to TX output from UART
@@ -64,10 +85,26 @@ int main(void)
     //INTERRUPT_PeripheralInterruptDisable(); 
 
     printf("\r\nL%d: App v%d.%d\r\n",__LINE__,APP_VERSION/100,APP_VERSION%100);
+    // wait for FVR (Fixed Voltage Reference for ADC) to be ready
+    for(i=0;i<APP_FVR_TIMEOUT_MS;i++){
+        if(FVR_IsOutputReady())
+            break;
+        __delay_ms(1);
+    }
+    if (i==APP_FVR_TIMEOUT_MS){
+        printf("ERROR: L%d FVR not READY after %u [ms]\r\n",
+             __LINE__,i);
+        app_fatal_error(APP_ERROR_FVR_NOT_READY);
+    } else {
+        printf("L%d FVR ready in %u [ms]\r\n",
+                __LINE__,i);
+    }
     while(1)
     {
         gCount++;
-        printf("L%d: C=%u\r\n",__LINE__,gCount);
+        gAdcRaw = ADC_GetConversion(channel_AN0);
+        printf("L%d: #=%u TEMP=%u.%01u RAW=%u (0x%x)\r\n",
+                __LINE__,gCount,gAdcRaw/10,gAdcRaw%10,gAdcRaw,gAdcRaw);
         __delay_ms(2000);
         IO_RB7_Toggle();
     }    

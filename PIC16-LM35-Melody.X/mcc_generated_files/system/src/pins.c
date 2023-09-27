@@ -61,7 +61,7 @@ void PIN_MANAGER_Initialize(void)
     /**
     WPUx registers
     */
-    WPUA = 0x3F;
+    WPUA = 0x3E;
     WPUB = 0x70;
     WPUC = 0xFF;
     OPTION_REGbits.nWPUEN = 0x0;
@@ -76,13 +76,13 @@ void PIN_MANAGER_Initialize(void)
     /**
     SLRCONx registers
     */
-    SLRCONA = 0x37;
+    SLRCONA = 0x36;
     SLRCONB = 0xF0;
     SLRCONC = 0xFF;
     /**
     INLVLx registers
     */
-    INLVLA = 0x3F;
+    INLVLA = 0x3E;
     INLVLB = 0xF0;
     INLVLC = 0xFF;
 

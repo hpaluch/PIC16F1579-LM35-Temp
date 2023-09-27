@@ -1,13 +1,27 @@
 # Measure temperature with PIC16F1579 and LM35 sensor
 
-Here is my first project where I plan to measure temperature using
-[LM35][LM35] sensor (which converts temperature to linear voltage delta)
-and [PIC16F1579][PIC16F1579].
+Here is my first project where I plan to measure temperature using [LM35][LM35]
+sensor (which converts temperature to linear voltage delta) and
+[PIC16F1579][PIC16F1579].
+
+[LM35][LM35] simply outputs 10 x mV voltage in Celsius, for example 260 mV =
+26.0 degrees of Celsius.  Please note that negative temperature can be sensed
+only with negative bias resistor - not realized here. For such details
+please see [LM35 datasheet][LM35].
+
+Our task is to measure this Voltage using ADC (and FVREF - fixed Voltage
+reference for ADC). By coincidence it is perfect fit for
+[PIC16F1579][PIC16F1579] because it has ADC but not I2C nor SPI (see note
+below).
+
+Please note that minimum supply Voltage for LM35 is 4V so it may be
+difficult to use with some recent boards.
 
 Also it is my first project where I'm playing with [MCC Melody][MCC Melody]
 code generator tool.
 
 Status:
+- PIN19 RA0 AN0 - input from LM35 Vout (middle pin of LM35 in TO92 package)
 - prints debug messages on UART, `PIN2`, `RA5`, as `UART TX` (`RA5PPS=9`) every 2s. You have to set your PC to:
   - Speed: 19200 Baud - can't use higher speed, because BRG (Baud Rate Generator) is very
     gross and higher speeds has unacceptable timing errors (like 3% or so), see data sheet
@@ -38,6 +52,11 @@ L70: C=2
 Used MCC Melody Components
 * [MCC UART Driver](https://onlinedocs.microchip.com/oxy/GUID-420E6AAC-9141-47BF-A4C7-A6EA17246D0D-en-US-17/GUID-BC229F28-29AC-46A3-9FAA-1681C2E93A5C.html#GUID-1D120597-A740-428D-B577-02558CF88F8A)
 * [MCC UART PLIB](https://onlinedocs.microchip.com/oxy/GUID-420E6AAC-9141-47BF-A4C7-A6EA17246D0D-en-US-17/GUID-D7E1665E-7BE5-456B-90BA-836DEC19A726.html#GUID-D7E1665E-7BE5-456B-90BA-836DEC19A726)
+* [FVR PLIB](https://onlinedocs.microchip.com/oxy/GUID-420E6AAC-9141-47BF-A4C7-A6EA17246D0D-en-US-17/GUID-E2CFC6D6-859C-486B-A5B0-606E44213C24.html#GUID-E2CFC6D6-859C-486B-A5B0-606E44213C24) - fixed
+  positive Voltage reference (1.024V in my example) for ADC.
+* [ADC PLIB](https://onlinedocs.microchip.com/oxy/GUID-420E6AAC-9141-47BF-A4C7-A6EA17246D0D-en-US-17/GUID-34B91501-8F37-4897-8CD9-F61B11819FB5.html#GUID-34B91501-8F37-4897-8CD9-F61B11819FB5) ADC
+  to convert Voltage from LM35 ( Celsius times 10mV - 260 mV = 26.0 Degreess of Celsius) to
+  Temperature and display it on UART
 
 > WARNING!
 > 

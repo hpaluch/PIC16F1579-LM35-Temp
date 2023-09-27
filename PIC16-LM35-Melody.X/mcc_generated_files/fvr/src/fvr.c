@@ -1,13 +1,13 @@
 /**
- * System Driver Source File
- * 
- * @file system.c
- * 
- * @ingroup systemdriver
- * 
- * @brief This file contains the API implementation for the System driver.
+ * FVR Generated Driver File.
  *
- * @version Driver Version 1.0.0
+ * @file fvr.c
+ * 
+ * @ingroup fvr 
+ * 
+ * @brief This file contains the API implementation for the FVR module.
+ * 
+ * @version FVR Driver Version 2.0.1
 */
 
 /*
@@ -31,16 +31,25 @@
     THIS SOFTWARE.
 */
 
-#include "../system.h"
+/**
+  Section: Included Files
+*/
+#include <xc.h>
+#include "../fvr.h"
 
-
-void SYSTEM_Initialize(void)
+/**
+  Section: FVR APIs
+*/
+void FVR_Initialize(void)
 {
-    CLOCK_Initialize();
-    PIN_MANAGER_Initialize();
-    ADC_Initialize();
-    EUSART_Initialize();
-    FVR_Initialize();
-    INTERRUPT_Initialize();
+    // ADFVR 1x; CDAFVR off; TSRNG Lo_range; TSEN disabled; FVREN enabled; 
+    FVRCON = 0x81;
 }
 
+bool FVR_IsOutputReady(void)
+{
+	return (FVRCONbits.FVRRDY);
+}
+/**
+ End of File
+*/
