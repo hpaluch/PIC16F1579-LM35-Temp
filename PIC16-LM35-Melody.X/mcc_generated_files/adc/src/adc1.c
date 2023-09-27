@@ -64,8 +64,8 @@ void ADC_Initialize(void)
     //TRIGSEL no_auto_trigger; 
     ADCON2 = 0x0;
 
-    //ADON enabled; GO_nDONE stop; CHS AN0; 
-    ADCON0 = 0x1;
+    //ADON enabled; GO_nDONE stop; CHS AN8; 
+    ADCON0 = 0x21;
 
     //Clear the ADC interrupt flag
     PIR1bits.ADIF = 0;

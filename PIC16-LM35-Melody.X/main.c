@@ -33,14 +33,13 @@
 #include "mcc_generated_files/system/system.h"
 
 
-#define APP_FVR_TIMEOUT_MS 101
+#define APP_FVR_TIMEOUT_MS 100
 
-#define APP_VERSION 100 // 123 = 1.23
+#define APP_VERSION 101 // 123 = 1.23
 
 typedef enum {
     APP_ERROR_FVR_NOT_READY
 } app_error_t;
-
 
 int8_t gErrorCode=-1;
 void app_fatal_error(app_error_t err){
@@ -57,7 +56,7 @@ void app_fatal_error(app_error_t err){
 */
 
 uint16_t gCount = 0;
-adc_result_t gAdcRaw = 0; // Raw value from ADC
+adc_result_t gAdcmv = 0; // Value from ADC, in mili-volts [mV]
 
 int main(void)
 {
@@ -84,7 +83,7 @@ int main(void)
     // Disable the Peripheral Interrupts 
     //INTERRUPT_PeripheralInterruptDisable(); 
 
-    printf("\r\nL%d: App v%d.%d\r\n",__LINE__,APP_VERSION/100,APP_VERSION%100);
+    printf("\r\nL%d: App v%d.%02d\r\n",__LINE__,APP_VERSION/100,APP_VERSION%100);
     // wait for FVR (Fixed Voltage Reference for ADC) to be ready
     for(i=0;i<APP_FVR_TIMEOUT_MS;i++){
         if(FVR_IsOutputReady())
@@ -102,9 +101,12 @@ int main(void)
     while(1)
     {
         gCount++;
-        gAdcRaw = ADC_GetConversion(channel_AN0);
-        printf("L%d: #=%u TEMP=%u.%01u RAW=%u (0x%x)\r\n",
-                __LINE__,gCount,gAdcRaw/10,gAdcRaw%10,gAdcRaw,gAdcRaw);
+        // ADC range is 10-bits => 1024
+        // Positive Vref = 1024 [mV]
+        // So ADC output is directly in [mV]
+        gAdcmv = ADC_GetConversion(channel_AN8);
+        printf("L%d: #%u Temp=%u.%01u [^C] V=%u [mV]\r\n",
+                __LINE__,gCount,gAdcmv/10,gAdcmv%10,gAdcmv);
         __delay_ms(2000);
         IO_RB7_Toggle();
     }    

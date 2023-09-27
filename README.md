@@ -1,7 +1,7 @@
 # Measure temperature with PIC16F1579 and LM35 sensor
 
-Here is my first project where I plan to measure temperature using [LM35][LM35]
-sensor (which converts temperature to linear voltage delta) and
+Here is my first project where I use [LM35][LM35]
+Temperature sensor (which converts temperature to linear voltage delta) and
 [PIC16F1579][PIC16F1579].
 
 [LM35][LM35] simply outputs 10 x mV voltage in Celsius, for example 260 mV =
@@ -21,33 +21,36 @@ Also it is my first project where I'm playing with [MCC Melody][MCC Melody]
 code generator tool.
 
 Status:
-- PIN19 RA0 AN0 - input from LM35 Vout (middle pin of LM35 in TO92 package)
-- prints debug messages on UART, `PIN2`, `RA5`, as `UART TX` (`RA5PPS=9`) every 2s. You have to set your PC to:
-  - Speed: 19200 Baud - can't use higher speed, because BRG (Baud Rate Generator) is very
-    gross and higher speeds has unacceptable timing errors (like 3% or so), see data sheet
-    at `DS40001782C-page 207 to page 208`
-  - Data: 8-bit
-  - Stop: 1 stop bit
-  - Parity: None
-  - Flow Control: None
-- in future I will print Temperature on UART
-- I was able to map UART pin only thanks good guys on Forum:
-  - https://forum.microchip.com/s/topic/a5C3l000000MdMJEA0/t381350
-
-Debug messages on UART:
+- it Works!
+- example UART output:
 ```
-L66: App v1.0
-L70: C=1
-L70: C=2
+L86: App v1.01
+L99 FVR ready in 0 [ms]
+L109: #1 Temp=28.2 [^C] V=282 [mV]
+L109: #2 Temp=28.3 [^C] V=283 [mV]
+L109: #3 Temp=28.2 [^C] V=282 [mV]
+L109: #4 Temp=28.3 [^C] V=283 [mV]
 ```
+- UART configuration: Speed 19200 Baud, 8-bit data, 1 stop bit, no parity, no flow control
 - legend:
   - `Lxx`: Line number in [PIC16-LM35-Melody.X/main.c](PIC16-LM35-Melody.X/main.c) source file
-  - `C=x`: simple counter that increments with each `printf(3)` in `while` loop
-- messages are as short as possible to deal well with relatively slow UART speed.
-
-- blinks LED on RB7 (PIN10) around 4s rate (toggle rate 2s) using
+  - `#x`: simple counter that increments with each `printf(3)` in `while` loop
+  - `V=YYY [mV]` ADC input from LM35 in milivolts
+  - `Temp=X.X [^C]` measured temperature in degrees of Celsius (just millivolts divided by 10)
+- PIN2 RA5 - UART TX (mapped with `RA5PPS=0x9`)
+- PIN8 RC6 AN8 - input from LM35 Vout (middle pin of LM35 in TO92 package)
+- PIN10 RB7 - blinks LED around 4s rate (toggle rate 2s) using
   Detail function in `main()` (no interrupt and/or Timer used, yet...).
   - I slowed it down to not overflow UART at 19200 Baud.
+
+
+Here is schema:
+
+![PIC16F1579 and LM35 - schema](ExpressPCB/pic16f1579-lm35.png)
+
+All schema files are in [ExpressPCB/](ExpressPCB/) folder.  Made
+in [ExpressPCB Classic][ExpressPCB Classic].
+
 
 Used MCC Melody Components
 * [MCC UART Driver](https://onlinedocs.microchip.com/oxy/GUID-420E6AAC-9141-47BF-A4C7-A6EA17246D0D-en-US-17/GUID-BC229F28-29AC-46A3-9FAA-1681C2E93A5C.html#GUID-1D120597-A740-428D-B577-02558CF88F8A)
@@ -55,7 +58,7 @@ Used MCC Melody Components
 * [FVR PLIB](https://onlinedocs.microchip.com/oxy/GUID-420E6AAC-9141-47BF-A4C7-A6EA17246D0D-en-US-17/GUID-E2CFC6D6-859C-486B-A5B0-606E44213C24.html#GUID-E2CFC6D6-859C-486B-A5B0-606E44213C24) - fixed
   positive Voltage reference (1.024V in my example) for ADC.
 * [ADC PLIB](https://onlinedocs.microchip.com/oxy/GUID-420E6AAC-9141-47BF-A4C7-A6EA17246D0D-en-US-17/GUID-34B91501-8F37-4897-8CD9-F61B11819FB5.html#GUID-34B91501-8F37-4897-8CD9-F61B11819FB5) ADC
-  to convert Voltage from LM35 ( Celsius times 10mV - 260 mV = 26.0 Degreess of Celsius) to
+  to convert Voltage from LM35 ( Celsius times 10mV - 260 mV = 26.0 Degrees of Celsius) to
   Temperature and display it on UART
 
 > WARNING!
@@ -105,6 +108,7 @@ You can find downloaded MCC Melody libraries under:
 c:\Users\USERNAME\.mcc\libraries\@mchp-mcc\FOLDER
 ```
 
+[ExpressPCB Classic]: https://www.expresspcb.com/expresspcb-classic-pcb-layout-software/
 [cable954]: https://www.modmypi.com/raspberry-pi/communication-1068/serial-1075/usb-to-ttl-serial-cable-debug--console-cable-for-raspberry-pi
 [XC compilers]: https://www.microchip.com/mplab/compilers
 [MPLAB X IDE]: https://www.microchip.com/mplab/mplab-x-ide

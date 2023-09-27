@@ -12,3 +12,5 @@ dist/
 # debugger
 *.log
 *.log.inx
+# Exports from PCB Express
+*.bmp
