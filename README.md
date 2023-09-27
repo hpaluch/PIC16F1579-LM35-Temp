@@ -4,6 +4,8 @@ Here is my first project where I use [LM35][LM35]
 Temperature sensor (which converts temperature to linear voltage delta) and
 [PIC16F1579][PIC16F1579].
 
+![PICDEM with LM35](assets/pic16f1579-lm35-picdem.jpg)
+
 [LM35][LM35] simply outputs 10 x mV voltage in Celsius, for example 260 mV =
 26.0 degrees of Celsius.  Please note that negative temperature can be sensed
 only with negative bias resistor - not realized here. For such details
@@ -76,9 +78,12 @@ Used MCC Melody Components
 
 - [PICDEM DM163045][DM163045] development board (you can use any PIC board that
   supports 20 pin [PIC16F1579][PIC16F1579]). I have one that is now 10 years old
-  and I stil like it - there is everything I need to work with 8-bit PIC MCUs.
+  and I still like it - there is everything I need to work with 8-bit PIC MCUs.
 
 Additional parts (not included with PICDEM):
+- Power supply 9V (or 9V battery) to power PICDEM board and its LM317 Voltage
+  regulator.
+  - ensure that output from LM317 regulator is just 5V.
 - [PIC16F1579][PIC16F1579]
 - [LM35][LM35] Temperature-to-Voltage sensor
 - [USB Console Cable #954][cable954] - or any other usable USB to UART adapter.
