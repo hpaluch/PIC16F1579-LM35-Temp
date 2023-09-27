@@ -8,8 +8,8 @@ Temperature sensor (which converts temperature to linear voltage delta) and
 
 [LM35][LM35] simply outputs 10 x mV voltage in Celsius, for example 260 mV =
 26.0 degrees of Celsius.  Please note that negative temperature can be sensed
-only with negative bias resistor - not realized here. For such details
-please see [LM35 datasheet][LM35].
+with negative bias resistor only - not realized here.
+Please see [LM35 datasheet][LM35] for details.
 
 Our task is to measure this Voltage using ADC (and FVREF - fixed Voltage
 reference for ADC). By coincidence it is perfect fit for
@@ -19,7 +19,7 @@ below).
 Please note that minimum supply Voltage for LM35 is 4V so it may be
 difficult to use with some recent boards.
 
-Also it is my first project where I'm playing with [MCC Melody][MCC Melody]
+Additionally it is my first project where I'm playing with [MCC Melody][MCC Melody]
 code generator tool.
 
 Status:
@@ -36,15 +36,16 @@ L109: #4 Temp=28.3 [^C] V=283 [mV]
 - UART configuration: Speed 19200 Baud, 8-bit data, 1 stop bit, no parity, no flow control
 - legend:
   - `Lxx`: Line number in [PIC16-LM35-Melody.X/main.c](PIC16-LM35-Melody.X/main.c) source file
-  - `#x`: simple counter that increments with each `printf(3)` in `while` loop
+  - `#x`: simple counter that increments with each measurement.
   - `V=YYY [mV]` ADC input from LM35 in milivolts
   - `Temp=X.X [^C]` measured temperature in degrees of Celsius (just millivolts divided by 10)
+
+Used PIC pins (excluding PicKit3 programmer and power supply):
 - PIN2 RA5 - UART TX (mapped with `RA5PPS=0x9`)
 - PIN8 RC6 AN8 - input from LM35 Vout (middle pin of LM35 in TO92 package)
 - PIN10 RB7 - blinks LED around 4s rate (toggle rate 2s) using
   Detail function in `main()` (no interrupt and/or Timer used, yet...).
   - I slowed it down to not overflow UART at 19200 Baud.
-
 
 Here is schema:
 
@@ -87,7 +88,6 @@ Additional parts (not included with PICDEM):
 - [PIC16F1579][PIC16F1579]
 - [LM35][LM35] Temperature-to-Voltage sensor
 - [USB Console Cable #954][cable954] - or any other usable USB to UART adapter.
-  - verify with DMM that LM317 regulator output on PICDEM board is just 5V
   - connect Black wire to Ground, and Green wire to UART TX - PIN2 RA5
 
 # Software Requirements
@@ -99,7 +99,38 @@ Additional parts (not included with PICDEM):
 
 # Setup
 
-TODO:
+* Install all requirements (proper XC8 and MPLAB X IDE version as specified
+  under  "Software requirements" section)
+* Ensure that everything is wired propely - use photo and schema
+  as guide
+* remember to properly setup connected UART in your Putty or another serial
+  terminal application - see header of this readme for UART connection details
+* run MPLAB X IDE
+* open this project in MPLAB - folder `PIC16-LM35-Melody.X/`
+* on first open there will be warning that there is no path to XC8 specified.
+* to fix this warning do this:
+  - click on Project Properties
+  - select XC8 -> your path to XC8
+  - click Apply and/or OK to finish
+* finally click on `Make and Program Device Main Project`
+* once programmed there should be short report of measured temperature on UART.
+
+# Summary
+
+In this age of I2C the good old [LM35][LM35] analog sensor can be easily overlooked as
+obsolete.  However I'm positively surprised how easy it is to setup and use it:
+
+- because output is basically Temperature in Celsius in millivolts times 10 it is
+  very easy to verify LM35 output even with plain DMM knowing that for example
+  250 mV is 25.0 Celsius - no other equipment (digital analyzer etc.) required.
+- although [PIC16F1579][PIC16F1579] may look limited at first sight I really like
+  their smart FVREF voltage reference that is intentionally set to same value
+  (1024 mV) as ADC range (10-bit or 1024). So just reading ADC Conversion value one
+  get directly result in mV without need for any kind of normalization - which is nice.
+
+So as long as you have suitable supply voltage (at least 4V required for
+LM35) it is still viable alternative to often overpriced digital sensors (I2C LM75 or
+even 1-wire Dallas 18B20).
 
 # Resources
 
@@ -107,6 +138,29 @@ MCC Melody is unable to Map UART TX pin in GUI - UART is shown in Pin Grid,
 but you can't assign pin to it. However here is solution - manually remap
 pin at program startup:
 - https://forum.microchip.com/s/topic/a5C3l000000MdMJEA0/t381350
+
+Also it is NOT enough to just select ADC Input pin in "Pin Grid Manager".
+One has also to:
+- select Project Resources -> System -> Pins
+- uncheck all stuff that may interfere with analog function including:
+  - uncheck Weak Pullup
+  - uncheck Slew Rate
+  - uncheck Input Level Control
+- basically only "Analog" should be kept checked for our PIN8, RC6, AN8
+- and Generate code again
+- if you did it properly there should be added ANx definition
+  under `PIC16-LM35-Melody.X/mcc_generated_files/adc/adc1.h` for example:
+
+  ```c
+  typedef enum
+  {
+      channel_Temp =  0x1d,
+      channel_DAC =  0x1e,
+      channel_FVR =  0x1f,
+      channel_AN8 =  0x8 // <= if this line is missing that Analog pin is configured incorrectly
+  } adc_channel_t;
+  ```
+
 
 You can find downloaded MCC Melody libraries under:
 ```
