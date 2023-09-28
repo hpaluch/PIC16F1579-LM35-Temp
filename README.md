@@ -44,8 +44,8 @@ Used PIC pins (excluding PicKit3 programmer and power supply):
 - PIN2 RA5 - UART TX (mapped with `RA5PPS=0x9`)
 - PIN8 RC6 AN8 - input from LM35 Vout (middle pin of LM35 in TO92 package)
 - PIN10 RB7 - blinks LED around 4s rate (toggle rate 2s) using
-  Detail function in `main()` (no interrupt and/or Timer used, yet...).
-  - I slowed it down to not overflow UART at 19200 Baud.
+  `__delay_ms(2000)` function in `main()` (no interrupt and/or Timer used/needed).
+  - I slowed down this loop to not overflow UART at 19200 Baud.
 
 Here is schema:
 
@@ -101,7 +101,7 @@ Additional parts (not included with PICDEM):
 
 * Install all requirements (proper XC8 and MPLAB X IDE version as specified
   under  "Software requirements" section)
-* Ensure that everything is wired propely - use photo and schema
+* Ensure that everything is wired properly - use photo and schema
   as guide
 * remember to properly setup connected UART in your Putty or another serial
   terminal application - see header of this readme for UART connection details
@@ -117,8 +117,9 @@ Additional parts (not included with PICDEM):
 
 # Summary
 
-In this age of I2C the good old [LM35][LM35] analog sensor can be easily overlooked as
-obsolete.  However I'm positively surprised how easy it is to setup and use it:
+In this age of I2C the good old [LM35][LM35] analog sensor can be easily
+overlooked as obsolete.  However I'm positively surprised how easy it is to
+setup and use it:
 
 - because output is basically Temperature in Celsius in millivolts times 10 it is
   very easy to verify LM35 output even with plain DMM knowing that for example
@@ -128,11 +129,16 @@ obsolete.  However I'm positively surprised how easy it is to setup and use it:
   (1024 mV) as ADC range (10-bit or 1024). So just reading ADC Conversion value one
   get directly result in mV without need for any kind of normalization - which is nice.
 
-So as long as you have suitable supply voltage (at least 4V required for
-LM35) it is still viable alternative to often overpriced digital sensors (I2C LM75 or
+So as long as you have suitable supply voltage (at least 4V required for LM35)
+it is still viable alternative to often overpriced digital sensors (I2C LM75 or
 even 1-wire Dallas 18B20).
 
-# Resources
+# Notes
+
+I use lower UART speed 19200 Baud than more common (115200 Baud), because
+higher speeds have significant clock error
+(see [PIC16F1579 datasheet][PIC16F1579] pages 207 to 209 of DS40001782C).
+
 
 MCC Melody is unable to Map UART TX pin in GUI - UART is shown in Pin Grid,
 but you can't assign pin to it. However here is solution - manually remap
@@ -167,6 +173,7 @@ You can find downloaded MCC Melody libraries under:
 c:\Users\USERNAME\.mcc\libraries\@mchp-mcc\FOLDER
 ```
 
+[DM164137]: https://www.microchip.com/en-us/development-tool/DM164137
 [ExpressPCB Classic]: https://www.expresspcb.com/expresspcb-classic-pcb-layout-software/
 [cable954]: https://www.modmypi.com/raspberry-pi/communication-1068/serial-1075/usb-to-ttl-serial-cable-debug--console-cable-for-raspberry-pi
 [XC compilers]: https://www.microchip.com/mplab/compilers
